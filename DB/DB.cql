@@ -74,3 +74,10 @@ CREATE TABLE IF NOT EXISTS ticket_messages
 ) WITH CLUSTERING ORDER BY (sent_at DESC)
    AND COMMENT = 'This table will hold messages related to every ticket. For field sender `True` indicates
     That the sender is admin and `False` indicates that the message sender is user';
+
+CREATE TABLE IF NOT EXISTS phone_contact_requests
+(
+    mobile    VARCHAR,
+    is_called BOOLEAN,
+    PRIMARY KEY ( mobile, is_called )
+) WITH CLUSTERING ORDER BY (is_called ASC)
