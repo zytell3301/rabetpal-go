@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS products
 CREATE TABLE IF NOT EXISTS tickets
 (
     title     VARCHAR,
+    id        UUID,
     subject   VARCHAR,
     status    TINYINT,
     is_closed BOOLEAN,
@@ -51,3 +52,14 @@ CREATE TABLE IF NOT EXISTS tickets
     PRIMARY KEY ( user_id, is_closed )
 ) WITH CLUSTERING ORDER BY (is_closed ASC)
    AND COMMENT = 'This is master entity of tickets. All data of sub entities must be present on this table';
+
+CREATE TABLE IF NOT EXISTS tickets_pk_id
+(
+    title     VARCHAR,
+    id        UUID,
+    subject   VARCHAR,
+    status    TINYINT,
+    is_closed BOOLEAN,
+    user_id   UUID,
+    PRIMARY KEY ( id )
+) WITH COMMENT = 'This table is used for reading a single ticket. `id` column value is shared between this and master table';
