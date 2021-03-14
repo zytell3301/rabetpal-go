@@ -63,3 +63,14 @@ CREATE TABLE IF NOT EXISTS tickets_pk_id
     user_id   UUID,
     PRIMARY KEY ( id )
 ) WITH COMMENT = 'This table is used for reading a single ticket. `id` column value is shared between this and master table';
+
+CREATE TABLE IF NOT EXISTS ticket_messages
+(
+    message   MAP<VARCHAR,VARCHAR>,
+    ticket_id UUID,
+    sender    BOOLEAN,
+    sent_at   TIMESTAMP,
+    PRIMARY KEY ( ticket_id, sent_at )
+) WITH CLUSTERING ORDER BY (sent_at DESC)
+   AND COMMENT = 'This table will hold messages related to every ticket. For field sender `True` indicates
+    That the sender is admin and `False` indicates that the message sender is user';
