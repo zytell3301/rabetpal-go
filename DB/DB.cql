@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS users
     password      VARCHAR,
     PRIMARY KEY (mobile)
 ) WITH COMMENT = 'This is master entity of user. All data of sub entities must be present on this table';
-    
+
 CREATE TABLE IF NOT EXISTS products
 (
     id           UUID,
@@ -39,4 +39,15 @@ CREATE TABLE IF NOT EXISTS products
     is_suspended MAP<VARCHAR,VARCHAR>,
     views        INT,
     PRIMARY KEY ( id )
-) WITH COMMENT = 'This is master entity of user. All data of sub entities must be present on this table'
+) WITH COMMENT = 'This is master entity of user. All data of sub entities must be present on this table';
+
+CREATE TABLE IF NOT EXISTS tickets
+(
+    title     VARCHAR,
+    subject   VARCHAR,
+    status    TINYINT,
+    is_closed BOOLEAN,
+    user_id   UUID,
+    PRIMARY KEY ( user_id, is_closed )
+) WITH CLUSTERING ORDER BY (is_closed ASC)
+   AND COMMENT = 'This is master entity of tickets. All data of sub entities must be present on this table';
