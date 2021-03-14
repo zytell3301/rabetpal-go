@@ -22,3 +22,21 @@ CREATE TABLE IF NOT EXISTS users
     password      VARCHAR,
     PRIMARY KEY (mobile)
 ) WITH COMMENT = 'This is master entity of user. All data of sub entities must be present on this table too';
+
+CREATE TABLE IF NOT EXISTS products
+(
+    id           UUID,
+    title        VARCHAR,
+    photos       MAP<INT,VARCHAR>,
+    description  TEXT,
+    post         MAP<VARCHAR,VARCHAR>,
+    product_type VARCHAR,
+    attributes   MAP<VARCHAR,VARCHAR>,
+    discount     INT,
+    active       BOOLEAN,
+    price        INT,
+    weight       INT,
+    is_suspended MAP<VARCHAR,VARCHAR>,
+    views        INT,
+    PRIMARY KEY ( id )
+) WITH COMMENT = 'This is master entity of user. All data of sub entities must be present on this table'
