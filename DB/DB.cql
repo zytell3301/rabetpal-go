@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS users
     broker        MAP<VARCHAR,VARCHAR>,
     password      VARCHAR,
     PRIMARY KEY (mobile)
-) WITH COMMENT = 'This is master entity of user. All data of sub entities must be present on this table too';
-
+) WITH COMMENT = 'This is master entity of user. All data of sub entities must be present on this table';
+    
 CREATE TABLE IF NOT EXISTS products
 (
     id           UUID,
