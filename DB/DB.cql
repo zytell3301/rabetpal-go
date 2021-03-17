@@ -103,4 +103,17 @@ CREATE TABLE IF NOT EXISTS phone_contact_requests
     mobile    VARCHAR,
     is_called BOOLEAN,
     PRIMARY KEY ( mobile, is_called )
-) WITH CLUSTERING ORDER BY (is_called ASC)
+) WITH CLUSTERING ORDER BY (is_called ASC);
+
+CREATE TABLE IF NOT EXISTS blog
+(
+    id          UUID,
+    summary     VARCHAR,
+    author_id   UUID,
+    content     TEXT,
+    header_pic  VARCHAR,
+    title       VARCHAR,
+    posted_at   TIMESTAMP,
+    last_update TIMESTAMP,
+    PRIMARY KEY ( id )
+);
