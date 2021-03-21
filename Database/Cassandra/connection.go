@@ -1,0 +1,69 @@
+package Cassandra
+
+import (
+	"fmt"
+	"github.com/gocql/gocql"
+	"strings"
+)
+
+type Connection struct {
+	Cluster *gocql.ClusterConfig
+	Session *gocql.Session
+}
+
+type TableMetaData struct {
+	Columns  map[string]struct{}
+	Pk       map[string]struct{}
+	Ck       map[string]struct{}
+	Keyspace string
+}
+
+var connections = make(map[string]Connection)
+
+var ConnectionManager = struct {
+	GetSession func(name string) *gocql.Session
+	AddSession func(keyspace string, connection Connection)
+}{
+	GetSession: func(name string) *gocql.Session {
+		return connections[name].Session
+	},
+	AddSession: func(keyspace string, connection Connection) {
+		fmt.Println("Connection " + keyspace + " just got set")
+		connections[keyspace] = connection
+	},
+}
+
+func FilterData(data map[string]interface{}, metaData TableMetaData) (map[string]interface{}, []string) {
+	var fields []string
+	values := make(map[string]interface{})
+	for column, _ := range metaData.Columns {
+		value, isset := data[column]
+		switch isset {
+		case true:
+			values[column] = value
+			fields = append(fields, column)
+		}
+	}
+	return values, fields
+}
+
+func GenerateEmptyInputs(count int) string {
+	var inputs []string
+	for i := 0; i < count; i++ {
+		inputs = append(inputs, "?")
+	}
+	return strings.Join(inputs, ",")
+}
+
+func BindArgs(data map[string]interface{}) []interface{} {
+	Args := []interface{}{}
+	for _, value := range data {
+		Args = append(Args, value)
+	}
+	return Args
+}
+
+func AddId(values *map[string]interface{}) {
+	id, _ := gocql.RandomUUID()
+	(*values)["id"] = id.String()
+}
