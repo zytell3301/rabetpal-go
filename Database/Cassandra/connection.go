@@ -68,15 +68,15 @@ func AddId(values *map[string]interface{}) {
 	(*values)["id"] = id.String()
 }
 
-func NewRecord(table string, values map[string]interface{}, batch *gocql.Batch) bool {
-	data, fields := Cassandra.FilterData(values, UsersMetaData)
+func NewRecord(table string, values map[string]interface{}, batch *gocql.Batch, metaData TableMetaData) bool {
+	data, fields := FilterData(values, metaData)
 	switch len(fields) == 0 {
 	case true:
 		return false
 	}
 	batch.Entries = append(batch.Entries, gocql.BatchEntry{
-		Stmt:       "INSERT INTO users (" + strings.Join(fields, ",") + ") VALUES (" + Cassandra.GenerateEmptyInputs(len(fields)) + ")",
-		Args:       Cassandra.BindArgs(data),
+		Stmt:       "INSERT INTO " + table + " (" + strings.Join(fields, ",") + ") VALUES (" + GenerateEmptyInputs(len(fields)) + ")",
+		Args:       BindArgs(data),
 		Idempotent: false,
 	})
 	return true
