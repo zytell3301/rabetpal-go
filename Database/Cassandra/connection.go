@@ -65,7 +65,11 @@ func BindArgs(data map[string]interface{}) []interface{} {
 
 func AddId(values *map[string]interface{}) {
 	id, _ := gocql.RandomUUID()
-	(*values)["id"] = id.String()
+	_, isset := (*values)["id"]
+	switch isset {
+	case false:
+		(*values)["id"] = id.String()
+	}
 }
 
 func NewRecord(table string, values map[string]interface{}, batch *gocql.Batch, metaData TableMetaData) bool {
