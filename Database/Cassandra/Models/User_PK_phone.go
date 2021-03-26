@@ -5,7 +5,7 @@ import (
 	"rabetpal/Database/Cassandra"
 )
 
-var User_PK_phoneMetaData = Cassandra.TableMetaData{
+var UserPKPhoneMetaData = Cassandra.TableMetaData{
 	Columns: map[string]struct{}{
 		"id":            {},
 		"name":          {},
@@ -42,4 +42,8 @@ func NewUserPKPhone(values map[string]interface{}, statement *gocql.Batch) bool 
 		return false
 	}
 	return true
+}
+
+func newUserPKPhone(values map[string]interface{}, statement *gocql.Batch) bool {
+	return Cassandra.NewRecord("users", values, statement, UserPKPhoneMetaData)
 }
