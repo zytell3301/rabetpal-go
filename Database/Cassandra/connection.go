@@ -19,6 +19,8 @@ type TableMetaData struct {
 	DependsOn []func(map[string]interface{}, *gocql.Batch) bool
 }
 
+type TableDependency []func(map[string]interface{}, *gocql.Batch) bool
+
 var connections = make(map[string]Connection)
 
 var ConnectionManager = struct {
@@ -89,7 +91,7 @@ func NewRecord(table string, values map[string]interface{}, batch *gocql.Batch, 
 
 func AddDependencies(dependencies []func(map[string]interface{}, *gocql.Batch) bool, values map[string]interface{}, statement *gocql.Batch) bool {
 	isSuccessful := true
-	for _,value := range dependencies{
+	for _, value := range dependencies {
 		isSuccessful = isSuccessful && value(values, statement)
 	}
 	return isSuccessful
