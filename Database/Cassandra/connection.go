@@ -16,7 +16,7 @@ type TableMetaData struct {
 	Pk        map[string]struct{}
 	Ck        map[string]struct{}
 	Keyspace  string
-	DependsOn []func(map[string]interface{}, *gocql.Batch) bool
+	DependsOn TableDependency
 }
 
 type TableDependency []func(map[string]interface{}, *gocql.Batch) bool

@@ -34,7 +34,7 @@ var UsersMetaData = Cassandra.TableMetaData{
 	Pk:        map[string]struct{}{"id": {}},
 	Ck:        nil,
 	Keyspace:  "rabetpal",
-	DependsOn: []func(map[string]interface{}, *gocql.Batch) bool{newUserPKPhone},
+	DependsOn: Cassandra.TableDependency{newUserPKPhone},
 }
 
 func NewUser(values map[string]interface{}, statement *gocql.Batch) bool {
