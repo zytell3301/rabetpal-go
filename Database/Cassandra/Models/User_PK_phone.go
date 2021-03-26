@@ -30,12 +30,10 @@ var UserPKPhoneMetaData = Cassandra.TableMetaData{
 	Keyspace: "rabetpal",
 }
 
-func NewUserPKPhone(values map[string]interface{}, statement *gocql.Batch) bool {
-	switch statement == nil {
-	case true:
-		statement = Cassandra.ConnectionManager.GetSession("rabetpal").NewBatch(gocql.LoggedBatch)
-	}
+func NewUserPKPhone(values map[string]interface{}) bool {
+	statement := Cassandra.ConnectionManager.GetSession("rabetpal").NewBatch(gocql.LoggedBatch)
 	Cassandra.AddId(&values)
+	newUserPKPhone(values, statement)
 	error := Cassandra.ConnectionManager.GetSession("rabetpal").ExecuteBatch(statement)
 	switch error != nil {
 	case true:
