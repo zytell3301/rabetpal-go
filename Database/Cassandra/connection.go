@@ -89,7 +89,7 @@ func NewRecord(table string, values map[string]interface{}, batch *gocql.Batch, 
 	return true
 }
 
-func AddDependencies(dependencies []func(map[string]interface{}, *gocql.Batch) bool, values map[string]interface{}, statement *gocql.Batch) bool {
+func AddDependencies(dependencies TableDependency, values map[string]interface{}, statement *gocql.Batch) bool {
 	isSuccessful := true
 	for _, value := range dependencies {
 		isSuccessful = isSuccessful && value(values, statement)
