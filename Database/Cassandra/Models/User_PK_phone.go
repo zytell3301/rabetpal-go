@@ -43,5 +43,5 @@ func NewUserPKPhone(values map[string]interface{}) bool {
 }
 
 func newUserPKPhone(values map[string]interface{}, statement *gocql.Batch) bool {
-	return Cassandra.NewRecord("users", values, statement, UserPKPhoneMetaData)
+	return Cassandra.NewRecord("users_pk_mobile", values, statement, UserPKPhoneMetaData)
 }
