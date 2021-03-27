@@ -6,6 +6,7 @@ import (
 )
 
 var UserPKPhoneMetaData = Cassandra.TableMetaData{
+	Table: "users_pk_mobile",
 	Columns: map[string]struct{}{
 		"id":            {},
 		"name":          {},

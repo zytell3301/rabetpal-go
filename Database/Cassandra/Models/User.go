@@ -12,6 +12,7 @@ type User struct {
 }
 
 var UsersMetaData = Cassandra.TableMetaData{
+	Table: "users",
 	Columns: map[string]struct{}{
 		"id":            {},
 		"name":          {},
