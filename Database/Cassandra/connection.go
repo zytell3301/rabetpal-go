@@ -12,6 +12,7 @@ type Connection struct {
 }
 
 type TableMetaData struct {
+	Table     string
 	Columns   map[string]struct{}
 	Pk        map[string]struct{}
 	Ck        map[string]struct{}
