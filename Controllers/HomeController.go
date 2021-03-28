@@ -1,15 +1,15 @@
 package Controllers
 
 import (
-	"net/http"
+	"github.com/kataras/iris/v12"
 	"rabetpal/Database/Cassandra/Models"
 )
 
 var Home = struct {
-	Index func(response http.ResponseWriter, request *http.Request)
+	Index func(ctx iris.Context)
 }{
-	Index: func(response http.ResponseWriter, request *http.Request) {
-		data := map[string]interface{}{"name": "Arshiya", "lastname": "Kiani", "address": map[string]string{"address1": "addr1"}}
-		Models.NewUser(data)
+	Index: func(ctx iris.Context) {
+		data := map[string]interface{}{"name": "Test", "lastname": "Test", "address": map[string]string{"address1": "addr1"},"mobile":"09372171814"}
+		Models.NewUser(data,nil)
 	},
 }
