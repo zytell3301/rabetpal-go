@@ -1,6 +1,7 @@
 package Models
 
 import (
+	"fmt"
 	"github.com/gocql/gocql"
 	"rabetpal/Database/Cassandra"
 )
@@ -49,6 +50,7 @@ func NewUser(values map[string]interface{}, statement *gocql.Batch) bool {
 	error := Cassandra.ConnectionManager.GetSession(UsersMetaData.Keyspace).ExecuteBatch(statement)
 	switch error != nil {
 	case true:
+		fmt.Println(error)
 		return false
 	}
 	return true
