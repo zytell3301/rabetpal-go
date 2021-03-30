@@ -40,14 +40,15 @@ var UsersMetaData = Cassandra.TableMetaData{
 }
 
 func NewUser(values map[string]interface{}, statement *gocql.Batch) bool {
+	connection := Cassandra.ConnectionManager.GetSession(UsersMetaData.Keyspace)
 	switch statement == nil {
 	case true:
-		statement = Cassandra.ConnectionManager.GetSession(UsersMetaData.Keyspace).NewBatch(gocql.LoggedBatch)
+		statement = connection.NewBatch(gocql.LoggedBatch)
 	}
 	Cassandra.AddId(&values)
 	Cassandra.NewRecord(UsersMetaData.Table, values, statement, UsersMetaData)
 	Cassandra.AddDependencies(UsersMetaData.DependsOn, values, statement)
-	error := Cassandra.ConnectionManager.GetSession(UsersMetaData.Keyspace).ExecuteBatch(statement)
+	error := connection.ExecuteBatch(statement)
 	switch error != nil {
 	case true:
 		fmt.Println(error)
