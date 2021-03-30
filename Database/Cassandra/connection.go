@@ -37,18 +37,16 @@ var ConnectionManager = struct {
 	},
 }
 
-func FilterData(data map[string]interface{}, metaData TableMetaData) (map[string]interface{}, []string) {
-	var fields []string
+func FilterData(data map[string]interface{}, metaData TableMetaData) (map[string]interface{}) {
 	values := make(map[string]interface{})
 	for column, _ := range metaData.Columns {
 		value, isset := data[column]
 		switch isset {
 		case true:
 			values[column] = value
-			fields = append(fields, column)
 		}
 	}
-	return values, fields
+	return values
 }
 
 func GenerateEmptyInputs(count int) string {
@@ -59,12 +57,14 @@ func GenerateEmptyInputs(count int) string {
 	return strings.Join(inputs, ",")
 }
 
-func BindArgs(data map[string]interface{}) []interface{} {
+func BindArgs(data map[string]interface{}) ([]interface{},string) {
 	Args := []interface{}{}
-	for _, value := range data {
+	fields := make([]string,0)
+	for field, value := range data {
 		Args = append(Args, value)
+		fields = append(fields,field)
 	}
-	return Args
+	return Args,strings.Join(fields,",")
 }
 
 func AddId(values *map[string]interface{}) {
@@ -77,14 +77,15 @@ func AddId(values *map[string]interface{}) {
 }
 
 func NewRecord(table string, values map[string]interface{}, batch *gocql.Batch, metaData TableMetaData) bool {
-	data, fields := FilterData(values, metaData)
-	switch len(fields) == 0 {
+	data := FilterData(values, metaData)
+	switch len(data) == 0 {
 	case true:
 		return false
 	}
+	Args,fields := BindArgs(data)
 	batch.Entries = append(batch.Entries, gocql.BatchEntry{
-		Stmt:       "INSERT INTO " + table + " (" + strings.Join(fields, ",") + ") VALUES (" + GenerateEmptyInputs(len(fields)) + ")",
-		Args:       BindArgs(data),
+		Stmt:       "INSERT INTO " + table + " (" + fields + ") VALUES (" + GenerateEmptyInputs(len(data)) + ")",
+		Args:       Args,
 		Idempotent: false,
 	})
 	return true
