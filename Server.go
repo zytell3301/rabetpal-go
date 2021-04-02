@@ -1,9 +1,13 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
+	"github.com/kataras/iris/v12"
+	"rabetpal/Controllers"
 )
 
 func main() {
-	router := mux.NewRouter()
+	r := iris.New()
+	r.Get("/test",Controllers.HomeController.Test)
+
+	r.Listen(":4042")
 }
