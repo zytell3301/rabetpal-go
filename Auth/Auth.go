@@ -8,5 +8,9 @@ func KeyFunc(*jwt.Token) (interface{}, error) {
 
 func DecodeJwt(signedString string) (jwt.MapClaims, error) {
 	decodedJwt, err := jwt.Parse(signedString, KeyFunc)
+	switch err != nil {
+	case true:
+		return nil, err
+	}
 	return decodedJwt.Claims.(jwt.MapClaims), err
 }
