@@ -9,7 +9,7 @@ import (
 func main() {
 	r := iris.New()
 
-	r.Get("/test",Controllers.HomeController.Test)
+	r.Get("/test",Controllers.HomeController.Index)
 
 	r.Listen(":4042")
 }
