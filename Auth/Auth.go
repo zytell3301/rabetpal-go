@@ -10,3 +10,8 @@ func DecodeJwt(signedString string) (*jwt.Token, error) {
 	decodedJwt, err := jwt.Parse(signedString, KeyFunc)
 	return decodedJwt, err
 }
+
+func EncodeJwt(claims jwt.MapClaims) (string, error) {
+	encoder := jwt.NewWithClaims(jwt.SigningMethodHS512, claims)
+	return encoder.SignedString([]byte("404E635266556A586E3272357538782F4125442A472D4B6150645367566B59703373367639792442264528482B4D6251655468576D5A7134743777217A25432A"))
+}
