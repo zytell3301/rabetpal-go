@@ -44,5 +44,9 @@ func NewUserPKPhone(values map[string]interface{}) bool {
 }
 
 func newUserPKPhone(values map[string]interface{}, statement *gocql.Batch) bool {
+	switch Cassandra.CheckPK(UserPKPhoneMetaData,&values) {
+	case false:
+		return false
+	}
 	return Cassandra.NewRecord(UserPKPhoneMetaData.Table, values, statement, UserPKPhoneMetaData)
 }
