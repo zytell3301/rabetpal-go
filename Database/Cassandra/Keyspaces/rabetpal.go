@@ -17,6 +17,7 @@ func init() {
 	connection.Cluster.Consistency = gocql.One
 	connection.Cluster.Timeout = 1 * time.Second
 	connection.Cluster.Keyspace = "rabetpal"
+	connection.Cluster.Port = Cassandra.Configs.GetInt("port")
 	connection.Session, _ = connection.Cluster.CreateSession()
 	Cassandra.ConnectionManager.AddSession("rabetpal", connection)
 }
