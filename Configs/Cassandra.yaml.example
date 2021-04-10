@@ -1,0 +1,5 @@
+# Host ip of current node
+#host: 127.0.0.1
+
+# Port number of current node
+#port: 9042
