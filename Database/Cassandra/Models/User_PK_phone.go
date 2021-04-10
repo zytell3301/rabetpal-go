@@ -5,7 +5,7 @@ import (
 	"rabetpal/Database/Cassandra"
 )
 
-var UserPKPhoneMetaData = Cassandra.TableMetaData{
+var UserPKMobileMetaData = Cassandra.TableMetaData{
 	Table: "users_pk_mobile",
 	Columns: map[string]struct{}{
 		"id":            {},
@@ -26,16 +26,16 @@ var UserPKPhoneMetaData = Cassandra.TableMetaData{
 		"broker":        {},
 		"password":      {},
 	},
-	Pk:       map[string]struct{}{"phone": {}},
+	Pk:       map[string]struct{}{"mobile": {}},
 	Ck:       nil,
 	Keyspace: "rabetpal",
 }
 
-func NewUserPKPhone(values map[string]interface{}) bool {
-	statement := Cassandra.ConnectionManager.GetSession(UserPKPhoneMetaData.Keyspace).NewBatch(gocql.LoggedBatch)
+func NewUserPKMobile(values map[string]interface{}) bool {
+	statement := Cassandra.ConnectionManager.GetSession(UserPKMobileMetaData.Keyspace).NewBatch(gocql.LoggedBatch)
 	Cassandra.AddId(&values)
-	newUserPKPhone(values, statement)
-	error := Cassandra.ConnectionManager.GetSession(UserPKPhoneMetaData.Keyspace).ExecuteBatch(statement)
+	newUserPKMobile(values, statement)
+	error := Cassandra.ConnectionManager.GetSession(UserPKMobileMetaData.Keyspace).ExecuteBatch(statement)
 	switch error != nil {
 	case true:
 		return false
@@ -43,10 +43,10 @@ func NewUserPKPhone(values map[string]interface{}) bool {
 	return true
 }
 
-func newUserPKPhone(values map[string]interface{}, statement *gocql.Batch) bool {
-	switch Cassandra.CheckPK(UserPKPhoneMetaData,&values) {
+func newUserPKMobile(values map[string]interface{}, statement *gocql.Batch) bool {
+	switch Cassandra.CheckPK(UserPKMobileMetaData,&values) {
 	case false:
 		return false
 	}
-	return Cassandra.NewRecord(UserPKPhoneMetaData.Table, values, statement, UserPKPhoneMetaData)
+	return Cassandra.NewRecord(UserPKMobileMetaData.Table, values, statement, UserPKMobileMetaData)
 }
