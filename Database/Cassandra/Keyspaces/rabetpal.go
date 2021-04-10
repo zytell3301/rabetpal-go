@@ -13,7 +13,7 @@ var connection = Cassandra.Connection{
 
 func init() {
 	fmt.Println("The connection is being set")
-	connection.Cluster = gocql.NewCluster("127.0.0.1")
+	connection.Cluster = gocql.NewCluster(Cassandra.Configs.GetString("host"))
 	connection.Cluster.Consistency = gocql.One
 	connection.Cluster.Timeout = 1 * time.Second
 	connection.Cluster.Keyspace = "rabetpal"
