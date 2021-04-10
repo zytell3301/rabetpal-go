@@ -98,3 +98,13 @@ func AddDependencies(dependencies TableDependency, values map[string]interface{}
 	}
 	return isSuccessful
 }
+
+func CheckPK(metaData TableMetaData, data *map[string]interface{}) bool {
+	for field := range metaData.Pk {
+		switch _, isSet := (*data)[field]; isSet {
+		case false:
+			return false
+		}
+	}
+	return true
+}
