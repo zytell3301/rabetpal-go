@@ -7,9 +7,23 @@ import (
 )
 
 type User struct {
-	id       gocql.UUID
-	name     string
-	lastname string
+	id            gocql.UUID
+	name          string
+	lastname      string
+	username      string
+	mobile        string
+	phone         string
+	address       map[string]string
+	bank_accounts map[string]string
+	national_code string
+	profile_pic   string
+	email         string
+	user_type     string
+	balance       int
+	admin         map[string]interface{}
+	seller        map[string]interface{}
+	broker        map[string]interface{}
+	password      string
 }
 
 var UsersMetaData = Cassandra.TableMetaData{
