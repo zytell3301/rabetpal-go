@@ -4,6 +4,11 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+type ValidationRule struct {
+	Rules        map[string]string
+	ErrorMessage map[string]string
+}
+
 var validatorPackage = validator.New()
 
 func Validate(data map[string]interface{}, rules map[string]string) bool {
