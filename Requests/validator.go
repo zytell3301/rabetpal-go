@@ -11,16 +11,18 @@ type ValidationRule struct {
 
 var validatorPackage = validator.New()
 
-func Validate(data map[string]interface{}, rules map[string]string) bool {
-	for offset, rule := range rules {
-		value, isSet := data[offset]
-		switch isSet {
+func Validate(data map[string]interface{}, validationRules ValidationRule) (bool, map[string]string) {
+	rules := validationRules.Rules
+	validationErrors := make(map[string]string)
+	var err error = nil
+	for field, rule := range rules {
+		value := data[field]
+		err = validatorPackage.Var(value, rule)
+		switch err != nil {
 		case true:
-			validatorPackage.Var(value, rule)
-			break
-		default:
-			validatorPackage.Var(nil, rule)
+			validationErrors[field] = validationRules.ErrorMessage[field]
+			err = nil
 		}
 	}
-	return true
+	return true, validationErrors
 }
