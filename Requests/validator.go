@@ -2,6 +2,8 @@ package Requests
 
 import (
 	"github.com/go-playground/validator/v10"
+	"github.com/kataras/iris/v12"
+	"strings"
 )
 
 type ValidationRule struct {
@@ -25,4 +27,12 @@ func Validate(data map[string]interface{}, validationRules ValidationRule) (bool
 		}
 	}
 	return true, validationErrors
+}
+
+func ValidateForm(ctx iris.Context, validationRules ValidationRule) (bool, map[string]string) {
+	data := make(map[string]interface{})
+	for field, value := range ctx.FormValues() {
+		data[field] = strings.Join(value, "")
+	}
+	return Validate(data, validationRules)
 }
