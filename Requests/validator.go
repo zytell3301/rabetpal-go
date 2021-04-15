@@ -16,6 +16,7 @@ var validatorPackage = validator.New()
 func validate(data map[string]interface{}, validationRules ValidationRule) (bool, map[string]string) {
 	rules := validationRules.Rules
 	validationErrors := make(map[string]string)
+	isValid := true
 	var err error = nil
 	for field, rule := range rules {
 		value := data[field]
@@ -23,10 +24,11 @@ func validate(data map[string]interface{}, validationRules ValidationRule) (bool
 		switch err != nil {
 		case true:
 			validationErrors[field] = validationRules.ErrorMessage[field]
+			isValid = false
 			err = nil
 		}
 	}
-	return true, validationErrors
+	return isValid, validationErrors
 }
 
 func ValidateForm(ctx iris.Context, validationRules ValidationRule) (bool, map[string]string) {
