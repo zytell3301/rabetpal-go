@@ -13,7 +13,7 @@ type ValidationRule struct {
 
 var validatorPackage = validator.New()
 
-func Validate(data map[string]interface{}, validationRules ValidationRule) (bool, map[string]string) {
+func validate(data map[string]interface{}, validationRules ValidationRule) (bool, map[string]string) {
 	rules := validationRules.Rules
 	validationErrors := make(map[string]string)
 	var err error = nil
@@ -34,5 +34,5 @@ func ValidateForm(ctx iris.Context, validationRules ValidationRule) (bool, map[s
 	for field, value := range ctx.FormValues() {
 		data[field] = strings.Join(value, "")
 	}
-	return Validate(data, validationRules)
+	return validate(data, validationRules)
 }
