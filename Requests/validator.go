@@ -1,40 +1,45 @@
 package Requests
 
 import (
+	"context"
+	"errors"
 	"github.com/go-playground/validator/v10"
 	"github.com/kataras/iris/v12"
+	"reflect"
 	"strings"
 )
 
 type ValidationRule struct {
-	Rules        map[string]string
-	ErrorMessage map[string]string
+	Rules        map[string]interface{}
+	ErrorMessage map[string]interface{}
 }
 
-var validatorPackage = validator.New()
+var v = validator.New()
 
-func validate(data map[string]interface{}, validationRules ValidationRule) (bool, map[string]string) {
-	rules := validationRules.Rules
-	validationErrors := make(map[string]string)
-	isValid := true
-	var err error = nil
+func validate(ctx context.Context, data map[string]interface{}, rules map[string]interface{}) map[string]interface{} {
+	errs := make(map[string]interface{})
 	for field, rule := range rules {
-		value := data[field]
-		err = validatorPackage.Var(value, rule)
-		switch err != nil {
-		case true:
-			validationErrors[field] = validationRules.ErrorMessage[field]
-			isValid = false
-			err = nil
+		if reflect.ValueOf(rule).Kind() == reflect.Map && reflect.ValueOf(data[field]).Kind() == reflect.Map {
+			err := validate(ctx, data[field].(map[string]interface{}), rule.(map[string]interface{}))
+			if len(err) > 0 {
+				errs[field] = err
+			}
+		} else if reflect.ValueOf(rule).Kind() == reflect.Map {
+			errs[field] = errors.New("The field: '" + field + "' is not a map to dive")
+		} else {
+			err := v.VarCtx(ctx, data[field], rule.(string))
+			if err != nil {
+				errs[field] = err
+			}
 		}
 	}
-	return isValid, validationErrors
+	return errs
 }
 
-func ValidateForm(ctx iris.Context, validationRules ValidationRule) (bool, map[string]string) {
+func ValidateForm(ctx iris.Context, validationRules ValidationRule) map[string]interface{} {
 	data := make(map[string]interface{})
 	for field, value := range ctx.FormValues() {
 		data[field] = strings.Join(value, "")
 	}
-	return validate(data, validationRules)
+	return validate(context.Background(), data, validationRules.Rules)
 }
