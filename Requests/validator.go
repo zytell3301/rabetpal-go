@@ -41,5 +41,19 @@ func ValidateForm(ctx iris.Context, validationRules ValidationRule) map[string]i
 	for field, value := range ctx.FormValues() {
 		data[field] = strings.Join(value, "")
 	}
-	return validate(context.Background(), data, validationRules.Rules)
+	return parseErrors(validate(context.Background(), data, validationRules.Rules),validationRules.ErrorMessage)
+}
+
+func parseErrors(errors map[string]interface{}, errorList map[string]interface{}) (errs map[string]interface{}) {
+	errs = make(map[string]interface{})
+	for field, err := range errors {
+		switch reflect.ValueOf(err).Kind() == reflect.Map {
+		case true:
+			errs[field] = parseErrors(errors[field].(map[string]interface{}), errorList[field].(map[string]interface{}))
+			break
+		default:
+			errs[field] = errorList[field]
+		}
+	}
+	return
 }
