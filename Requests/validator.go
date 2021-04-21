@@ -10,8 +10,8 @@ import (
 )
 
 type ValidationRule struct {
-	Rules        map[string]interface{}
-	ErrorMessage map[string]interface{}
+	Rules         map[string]interface{}
+	ErrorMessages map[string]interface{}
 }
 
 var v = validator.New()
@@ -41,7 +41,7 @@ func ValidateForm(ctx iris.Context, validationRules ValidationRule) map[string]i
 	for field, value := range ctx.FormValues() {
 		data[field] = strings.Join(value, "")
 	}
-	return parseErrors(validate(context.Background(), data, validationRules.Rules),validationRules.ErrorMessage)
+	return parseErrors(validate(context.Background(), data, validationRules.Rules),validationRules.ErrorMessages)
 }
 
 func parseErrors(errors map[string]interface{}, errorList map[string]interface{}) (errs map[string]interface{}) {
