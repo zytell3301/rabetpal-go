@@ -9,6 +9,7 @@ import (
 var space uuid.UUID
 
 func init() {
+	fmt.Println("Space uuid is being set")
 	space = uuid.New()
 	err := space.UnmarshalText([]byte(Uuid.Configs.GetString("space")))
 	switch err != nil {
