@@ -12,7 +12,7 @@ var connection = Cassandra.Connection{
 }
 
 func init() {
-	fmt.Println("The connection is being set")
+	fmt.Println("Connection rabetpal is being set")
 	connection.Cluster = gocql.NewCluster(Cassandra.Configs.GetString("host"))
 	connection.Cluster.Consistency = gocql.One
 	connection.Cluster.Timeout = 1 * time.Second
