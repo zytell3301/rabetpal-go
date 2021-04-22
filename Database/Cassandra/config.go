@@ -8,7 +8,7 @@ import (
 var Configs *viper.Viper
 
 func init() {
-	fmt.Println("Config is being set")
+	fmt.Println("Cassandra Configs are being set")
 	Configs = viper.New()
 	Configs.AddConfigPath("./Configs")
 	Configs.SetConfigName("Cassandra")
@@ -18,4 +18,5 @@ func init() {
 	case true:
 		panic("Unable to read config \"Cassandra\". Error: " + err.Error())
 	}
+	fmt.Println("Cassandra configs just got set successfully")
 }
