@@ -18,3 +18,7 @@ func init() {
 	}
 	fmt.Println("Space uuid just got set successfully")
 }
+
+func GenerateV5(name []byte) string {
+	return uuid.NewSHA1(space, name).String()
+}
