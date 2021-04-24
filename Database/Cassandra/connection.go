@@ -18,7 +18,7 @@ type TableMetaData struct {
 	Ck        map[string]struct{}
 	Keyspace  string
 	DependsOn TableDependency
-	Maps map[string]interface{}
+	Maps      map[string]interface{}
 }
 
 type TableDependency []func(map[string]interface{}, *gocql.Batch) bool
@@ -38,7 +38,7 @@ var ConnectionManager = struct {
 	},
 }
 
-func FilterData(data map[string]interface{}, metaData TableMetaData) (map[string]interface{}) {
+func FilterData(data map[string]interface{}, metaData TableMetaData) map[string]interface{} {
 	values := make(map[string]interface{})
 	for column, _ := range metaData.Columns {
 		value, isset := data[column]
@@ -58,14 +58,14 @@ func GenerateEmptyInputs(count int) string {
 	return strings.Join(inputs, ",")
 }
 
-func BindArgs(data map[string]interface{}) ([]interface{},string) {
+func BindArgs(data map[string]interface{}) ([]interface{}, string) {
 	Args := []interface{}{}
-	fields := make([]string,0)
+	fields := make([]string, 0)
 	for field, value := range data {
 		Args = append(Args, value)
-		fields = append(fields,field)
+		fields = append(fields, field)
 	}
-	return Args,strings.Join(fields,",")
+	return Args, strings.Join(fields, ",")
 }
 
 func AddId(values *map[string]interface{}) {
@@ -83,7 +83,7 @@ func NewRecord(table string, values map[string]interface{}, batch *gocql.Batch, 
 	case true:
 		return false
 	}
-	Args,fields := BindArgs(data)
+	Args, fields := BindArgs(data)
 	batch.Entries = append(batch.Entries, gocql.BatchEntry{
 		Stmt:       "INSERT INTO " + table + " (" + fields + ") VALUES (" + GenerateEmptyInputs(len(data)) + ")",
 		Args:       Args,
