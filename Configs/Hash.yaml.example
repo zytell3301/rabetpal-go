@@ -1,0 +1,2 @@
+# Determines the hash round being supplied to hash package
+hash_round:
