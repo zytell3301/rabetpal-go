@@ -76,7 +76,7 @@ func AddId(values *map[string]interface{}, idName interface{}) {
 		id = GenerateUuidv4()
 		break
 	default:
-		id = Uuid.GenerateV5(idName.([]byte))
+		id = Uuid.GenerateV5(idName.(string))
 	}
 	_, isset := (*values)["id"]
 	switch isset {
