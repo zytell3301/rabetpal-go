@@ -7,7 +7,7 @@ import (
 
 var space uuid.UUID
 
-func init() {
+func initSpace() {
 	fmt.Println("Space uuid is being set")
 	space = uuid.New()
 	err := space.UnmarshalText([]byte(Configs.GetString("space")))

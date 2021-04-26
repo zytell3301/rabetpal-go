@@ -19,4 +19,5 @@ func init() {
 		panic("Unable to read config \"Uuid\". Error: " + err.Error())
 	}
 	fmt.Println("Config \"Uuid\" just got read successfully")
+	initSpace()
 }
