@@ -33,7 +33,7 @@ var UserPKMobileMetaData = Cassandra.TableMetaData{
 
 func NewUserPKMobile(values map[string]interface{}) bool {
 	statement := Cassandra.ConnectionManager.GetSession(UserPKMobileMetaData.Keyspace).NewBatch(gocql.LoggedBatch)
-	Cassandra.AddId(&values)
+	Cassandra.AddId(&values,nil)
 	newUserPKMobile(values, statement)
 	error := Cassandra.ConnectionManager.GetSession(UserPKMobileMetaData.Keyspace).ExecuteBatch(statement)
 	switch error != nil {

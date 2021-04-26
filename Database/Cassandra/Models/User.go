@@ -59,7 +59,7 @@ func NewUser(values map[string]interface{}, statement *gocql.Batch) bool {
 	case true:
 		statement = connection.NewBatch(gocql.LoggedBatch)
 	}
-	Cassandra.AddId(&values)
+	Cassandra.AddId(&values, values["mobile"])
 	Cassandra.NewRecord(UsersMetaData.Table, values, statement, UsersMetaData)
 	Cassandra.AddDependencies(UsersMetaData.DependsOn, values, statement)
 	error := connection.ExecuteBatch(statement)
