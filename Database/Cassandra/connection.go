@@ -3,6 +3,7 @@ package Cassandra
 import (
 	"fmt"
 	"github.com/gocql/gocql"
+	"rabetpal/Database/Uuid"
 	"strings"
 )
 
@@ -68,12 +69,19 @@ func BindArgs(data map[string]interface{}) ([]interface{}, string) {
 	return Args, strings.Join(fields, ",")
 }
 
-func AddId(values *map[string]interface{}) {
-	id, _ := gocql.RandomUUID()
+func AddId(values *map[string]interface{}, idName interface{}) {
+	var id string
+	switch idName == nil {
+	case true:
+		id = GenerateUuidv4()
+		break
+	default:
+		id = Uuid.GenerateV5(idName.([]byte))
+	}
 	_, isset := (*values)["id"]
 	switch isset {
 	case false:
-		(*values)["id"] = id.String()
+		(*values)["id"] = id
 	}
 }
 
