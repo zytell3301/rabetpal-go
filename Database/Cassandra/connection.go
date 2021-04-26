@@ -77,6 +77,11 @@ func AddId(values *map[string]interface{}) {
 	}
 }
 
+func GenerateUuidv4() string {
+	id, _ := gocql.RandomUUID()
+	return id.String()
+}
+
 func NewRecord(table string, values map[string]interface{}, batch *gocql.Batch, metaData TableMetaData) bool {
 	data := FilterData(values, metaData)
 	switch len(data) == 0 {
