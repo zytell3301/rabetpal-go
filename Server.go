@@ -7,7 +7,6 @@ import (
 	"rabetpal/Controllers/Users"
 	_ "rabetpal/Database/Cassandra/Keyspaces"
 	_ "rabetpal/Database/Uuid"
-	_ "rabetpal/Database/Uuid/Generator"
 )
 
 func main() {
