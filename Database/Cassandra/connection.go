@@ -18,11 +18,11 @@ type TableMetaData struct {
 	Pk        map[string]struct{}
 	Ck        map[string]struct{}
 	Keyspace  string
-	DependsOn TableDependency
+	DependsOn TableDependencies
 	Maps      map[string]interface{}
 }
 
-type TableDependency []func(map[string]interface{}, *gocql.Batch) bool
+type TableDependencies []func(map[string]interface{}, *gocql.Batch) bool
 
 var connections = make(map[string]Connection)
 
@@ -105,7 +105,7 @@ func NewRecord(table string, values map[string]interface{}, batch *gocql.Batch, 
 	return true
 }
 
-func AddDependencies(dependencies TableDependency, values map[string]interface{}, statement *gocql.Batch) bool {
+func AddDependencies(dependencies TableDependencies, values map[string]interface{}, statement *gocql.Batch) bool {
 	isSuccessful := true
 	for _, value := range dependencies {
 		isSuccessful = isSuccessful && value(values, statement)
