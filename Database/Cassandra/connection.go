@@ -23,6 +23,7 @@ type TableMetaData struct {
 }
 
 type TableDependencies []func(map[string]interface{}, *gocql.Batch) bool
+type TableDependency func(map[string]interface{}, *gocql.Batch) bool
 
 var connections = make(map[string]Connection)
 
