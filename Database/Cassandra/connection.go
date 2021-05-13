@@ -114,6 +114,10 @@ func AddDependencies(dependencies TableDependencies, values map[string]interface
 	return isSuccessful
 }
 
+func addDependency(channel chan bool, dependency TableDependency, values map[string]interface{}, statement *gocql.Batch) {
+	channel <- dependency(values, statement)
+}
+
 func CheckPK(metaData TableMetaData, data *map[string]interface{}) bool {
 	for field := range metaData.Pk {
 		switch _, isSet := (*data)[field]; isSet {
