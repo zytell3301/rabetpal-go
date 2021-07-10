@@ -2,6 +2,12 @@ CREATE KEYSPACE IF NOT EXISTS rabetpal WITH REPLICATION = {'class':'SimpleStrate
 
 USE rabetpal;
 
+CREATE TYPE BankAccount (
+    account_number VARCHAR,
+    iban VARCHAR,
+    expiration_date TIMESTAMP,
+    );
+
 CREATE TABLE IF NOT EXISTS users
 (
     id            UUID,
@@ -11,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users
     mobile        VARCHAR,
     phone         VARCHAR,
     address       MAP<VARCHAR,VARCHAR>,
-    bank_accounts MAP<VARCHAR,VARCHAR>,
+    bank_accounts MAP<VARCHAR,BankAccount>,
     national_code VARCHAR,
     profile_pic   VARCHAR,
     email         VARCHAR,
