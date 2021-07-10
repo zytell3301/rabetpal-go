@@ -108,9 +108,26 @@ func NewRecord(table string, values map[string]interface{}, batch *gocql.Batch, 
 
 func AddDependencies(dependencies TableDependencies, values map[string]interface{}, statement *gocql.Batch) bool {
 	isSuccessful := true
+	channel := make(chan bool)
+	taskNum := 0
+
 	for _, dependency := range dependencies {
-		isSuccessful = isSuccessful && dependency(values, statement)
+		taskNum++
+		go addDependency(channel, dependency, values, statement)
 	}
+
+	for isSucceed := range channel {
+		fmt.Println("succeed:", isSucceed)
+		isSuccessful = isSuccessful && isSucceed
+		taskNum--
+
+		if taskNum == 0 {
+			fmt.Println("getting out")
+			break
+		}
+	}
+	fmt.Println("finished")
+
 	return isSuccessful
 }
 
