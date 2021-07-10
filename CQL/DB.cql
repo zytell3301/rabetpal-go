@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS users_pk_mobile
     mobile        VARCHAR,
     phone         VARCHAR,
     address       MAP<VARCHAR,VARCHAR>,
-    bank_accounts MAP<VARCHAR,VARCHAR>,
+    bank_accounts MAP<VARCHAR,BankAccount>,
     national_code VARCHAR,
     profile_pic   VARCHAR,
     email         VARCHAR,
